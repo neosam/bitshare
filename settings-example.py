@@ -151,4 +151,9 @@ LOGGING = {
 
 
 # bitshare settings
+ROOT_URL='http://localhost:8000'
+
 STATICLINK='/static/test.txt'
+AMOUNT=3.0
+MIN_CONFIRMATIONS=0
+
