@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+
+<!-- This file is just a simple demonstration how a dynamic website can
+access to the bitshare api -->
+
+<html>
+<head>
+<title>Request payment status</title>
+<script type="text/javascript">
+var httpRequest;
+var jsonAnswer;
+
+function getStuff() {
+    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        var response = httpRequest.response;
+        console.log(response);
+        eval('jsonAnswer = ' + response);
+        if (jsonAnswer == false)
+            answer = "Sorry, we did not receive your payment yet."
+        else
+            answer = "Thanks!  Payment received!  You can download " +
+			'the Link at <a href="' + jsonAnswer + '">' +
+                        jsonAnswer + "</a>."
+        document.getElementById('respond').innerHTML = answer;
+    }
+}
+
+function init() {
+    /* Get attributes */
+    preArgs = location.href.split('?')[1].split('&');
+    args = new Object();
+    for (i in preArgs) {
+        split = preArgs[i].split('=');
+        args[split[0]] = split[1];
+    }
+
+    if (window.XMLHttpRequest) { // Mozilla, Safari, Opera, IE7
+        httpRequest = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) { // IE6, IE5
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else {
+        alert('Your Browser is not supported... sorry');
+    }
+    
+    httpRequest.onreadystatechange = getStuff; // Callback Function
+    httpRequest.open('GET', '/request/' + args.address, true);
+    httpRequest.send(); // Start request
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<h1>Bitshare - Request your link</h1>
+<p id="respond"></p>
+</body>
+</html>

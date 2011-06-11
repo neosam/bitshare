@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+
+<!-- This file is just a simple demonstration how a dynamic website can
+access to the bitshare api -->
+
+<html>
+<head>
+<title>Request payment status</title>
+<script type="text/javascript">
+var httpRequest;
+var jsonAnswer;
+
+function getStuff() {
+    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        var responseXml = httpRequest.response;
+        console.log(responseXml);
+        eval('jsonAnswer = ' + responseXml);
+        link = 'request.html?address=' + jsonAnswer.bitcoinAddress;
+        document.getElementById('amount').innerHTML = jsonAnswer.amount;
+        document.getElementById('requestLink').innerHTML = link;
+        document.getElementById('requestLink').href = link;
+        document.getElementById('bitcoinAddress').innerHTML = 
+                                               jsonAnswer.bitcoinAddress;
+    }
+}
+
+function init() {
+    if (window.XMLHttpRequest) { // Mozilla, Safari, Opera, IE7
+        httpRequest = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) { // IE6, IE5
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else {
+        alert('Your Browser is not supported... sorry');
+    }
+    
+    httpRequest.onreadystatechange = getStuff; // Callback Function
+    httpRequest.open('GET', '/loading/', true);
+    httpRequest.send(); // Start request
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<h1>Bitshare - Request payment status</h1>
+<p>To get a link to the download please transfair <span id="amount"></span>
+Bitcoins to the Bitcoin Adress <span id="bitcoinAddress"></span>.</p>
+<p>If the payment is confirmed by us, you can download the link at
+<a id="requestLink"></a>.</p>
+</body>
+</html>
