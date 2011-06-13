@@ -13,7 +13,9 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^loading/$', 'staticload.views.getLink'),
+    url(r'^loading/(?P<uuid>.*)$', 'staticload.views.getLink'),
     url(r'^request/(?P<address>.*)$', 'staticload.views.request'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^uploadtest/$', 'staticload.views.upload'),
+    url(r'^download/(?P<address>.*)$', 'staticload.views.download'),
 )

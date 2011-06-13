@@ -15,12 +15,15 @@ function getStuff() {
         var responseXml = httpRequest.response;
         console.log(responseXml);
         eval('jsonAnswer = ' + responseXml);
+        if (jsonAnswer == false)
+            return;
         link = 'request.html?address=' + jsonAnswer.bitcoinAddress;
         document.getElementById('amount').innerHTML = jsonAnswer.amount;
         document.getElementById('requestLink').innerHTML = link;
         document.getElementById('requestLink').href = link;
         document.getElementById('bitcoinAddress').innerHTML = 
                                                jsonAnswer.bitcoinAddress;
+        document.getElementById('hiddenstuff').style['display'] = 'block';
     }
 }
 
@@ -34,20 +37,27 @@ function init() {
     else {
         alert('Your Browser is not supported... sorry');
     }
+
+    uuid = document.getElementById('uuid').value
+    console.log(document.getElementById('uuid'))
     
     httpRequest.onreadystatechange = getStuff; // Callback Function
-    httpRequest.open('GET', '/loading/', true);
+    httpRequest.open('GET', '/loading/' + uuid, true);
     httpRequest.send(); // Start request
 }
 
 
 </script>
 </head>
-<body onload="init()">
+<body>
 <h1>Bitshare - Request payment status</h1>
+<p>Please input requested fileID in here: <input id="uuid"></input><br/>
+<button onclick="init()">Request Link</button>
+<div id="hiddenstuff" style="display:none">
 <p>To get a link to the download please transfair <span id="amount"></span>
 Bitcoins to the Bitcoin Adress <span id="bitcoinAddress"></span>.</p>
 <p>If the payment is confirmed by us, you can download the link at
 <a id="requestLink"></a>.</p>
+</div>
 </body>
 </html>
