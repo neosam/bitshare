@@ -1,0 +1,73 @@
+* Bitshare
+  Bitshare lets you host file anonymously.  You can specify a price for that
+  file which the downloader must pay.  Currency is bitcoin.
+
+** License
+I need to decide which license I want to take for this project.
+GPL is much to strong because it should be possible for company to use
+it without worrying of sharing the source.  Maybe BSD looks nice.
+
+** Install
+*** Requirements
+    - [[http://www.bitcoin.org][Bitcon Client]]
+    
+      We need a bitcoin server in the background to do all the bitcoin
+      stuff.
+
+    - [[https://github.com/toomanysecrets0/bitcoin-python][bitcoin-python]]
+
+      To access the server we use the bitcoin-python api you can access
+      through github.
+
+    - [[http://pypi.python.org/pypi/simplejson/][python-simplejson]]
+
+      To generate the bitshare json interface we need the simplejson
+      package for python.
+
+    - [[http://www.djangoproject.com][Django]]
+
+      To publish everything.
+
+*** Starting the bitcoin client
+    Start the bitcoin daemon and we can access the server wide wallet.dat.
+
+*** Installing using the devel-server
+    1. Extract the project anywhere you like.
+    2. Copy settings-example.py to settings.py and config it:
+       1. Change username and email in ADMIN
+       2. Set the database you want.  Maybe sqlite is enough for you?
+       3. Set path for STATIC_URL and STATICFILES_DIRS (static files are stored in the project)
+       4. Set MEDIA_ROOT to the path you want to store the uploaded files.
+    3. Create the database:
+#+src_begin bash
+$ python manage.py syncdb
+#+src_end
+     3. Run the server:
+#+src_begin
+$ python manage.py runserver 0.0.0.0:8000
+#+src_end
+
+** Usage
+*** Uploading files
+    Upload your files by access http://server:8000/static/upload.html
+
+    Specify amount and your bitcoin address and the system will send you
+    the price for each download.
+    
+    After uploading you will get the uuid code for this file.  Use this
+    code to give other people access to the file.
+
+*** Downloading files
+    Request to download a file at http://server:8000/static/loading.html
+    
+    Enter the uuid of the file you want to download.  After that you
+    will see the amount you have to pay to get this file and where to buy.
+
+    Click the request link to access the download link.  The request page
+    will check you payment and build the download link for you. 
+
+*** API
+    The api is a json based interface.  So you are free to write your own
+    bitshare client.
+
+    TODO: Explain the API

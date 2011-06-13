@@ -2,3 +2,4 @@
 settings.py
 .*.swp
 db.sqlite3
+*~
